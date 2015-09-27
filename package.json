@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "cordova": "~5.3.3"
+    "cordova": "~5.3.3",
+    "mocha": "~2.3.3"
   },
   "devDependencies": {},
   "scripts": {
