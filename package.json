@@ -1,0 +1,22 @@
+{
+  "name": "ff-alias-list-app",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cordova": "~5.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pixelistik/ff-alias-list-app.git"
+  },
+  "author": "pixelistik",
+  "license": "GPL v3",
+  "bugs": {
+    "url": "https://github.com/pixelistik/ff-alias-list-app/issues"
+  }
+}
