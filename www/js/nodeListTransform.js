@@ -4,10 +4,17 @@ var nodeListTransform = function (nodeData) {
 	var nodeList = [];
 
 	for (var id in nodes) {
-		nodeList.push({
-			hostname: nodes[id].nodeinfo.hostname,
-			macs: nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless
-		});
+		try {
+			if (
+				typeof nodes[id].nodeinfo.hostname !== "undefined" &&
+				typeof nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless !== "undefined"
+			) {
+				nodeList.push({
+					hostname: nodes[id].nodeinfo.hostname,
+					macs: nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless
+				});
+			}
+		} catch (e) {}
 	}
 
 	return nodeList.map(function (node) {
