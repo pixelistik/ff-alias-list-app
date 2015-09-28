@@ -54,7 +54,7 @@
 		});
 
 		return extendedMacList.map(function (node) {
-				return node.mac + "|" + node.hostname
+				return node.mac + "|" + node.hostname + " (" + node.mac + ")"
 			});
 	};
 

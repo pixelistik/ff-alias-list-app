@@ -21,7 +21,7 @@ describe("Wifi Analyzer alias list", function () {
 				}
 			}
 		});
-		assert.include(result, "99:ee:ee:ee:01:01|host-one");
+		assert.include(result, "99:ee:ee:ee:01:01|host-one (99:ee:ee:ee:01:01)");
 	});
 
 	it("should filter out nodes without hostname", function () {
@@ -87,8 +87,8 @@ describe("Wifi Analyzer alias list", function () {
 			}
 		});
 
-		assert.include(result, "99:ee:ee:ee:01:01|host-one");
-		assert.include(result, "11:ee:ee:ee:01:01|host-one");
+		assert.include(result, "99:ee:ee:ee:01:01|host-one (99:ee:ee:ee:01:01)");
+		assert.include(result, "11:ee:ee:ee:01:01|host-one (11:ee:ee:ee:01:01)");
 	});
 
 	it("should add the next and previous mac", function () {
@@ -111,8 +111,8 @@ describe("Wifi Analyzer alias list", function () {
 			}
 		});
 
-		assert.include(result, "99:ee:ee:ee:01:01|host-one");
-		assert.include(result, "99:ef:ee:ee:01:01|host-one");
-		assert.include(result, "99:ed:ee:ee:01:01|host-one");
+		assert.include(result, "99:ee:ee:ee:01:01|host-one (99:ee:ee:ee:01:01)");
+		assert.include(result, "99:ef:ee:ee:01:01|host-one (99:ef:ee:ee:01:01)");
+		assert.include(result, "99:ed:ee:ee:01:01|host-one (99:ed:ee:ee:01:01)");
 	});
 });
