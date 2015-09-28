@@ -13,10 +13,12 @@ var app = {
 			// Success!
 			var data = JSON.parse(this.response);
 
+			var text = nodeListTransform(data).join("\n");
+
 			window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
-				dir.getFile("log.txt", {create:true}, function(file) {
+				dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
 					file.createWriter(function(fileWriter) {
-						var blob = new Blob([data.timestamp], {type:'text/plain'});
+						var blob = new Blob([text], {type:'text/plain'});
 						fileWriter.write(blob);
 					}, fail);
 				});
