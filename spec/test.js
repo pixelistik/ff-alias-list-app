@@ -1,4 +1,4 @@
-var assert = require("assert")
+var assert = require("chai").assert
 var nodeListTransform = require("../www/js/nodeListTransform.js")
 
 describe("Wifi Analyzer alias list", function () {
@@ -21,6 +21,6 @@ describe("Wifi Analyzer alias list", function () {
 				}
 			}
 		});
-		assert.equal(result, "99:ee:ee:ee:01:01|host-one");
+		assert.include(result, "99:ee:ee:ee:01:01|host-one");
 	});
 });
