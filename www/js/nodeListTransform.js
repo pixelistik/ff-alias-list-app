@@ -2,6 +2,7 @@ var nodeListTransform = function (nodeData) {
 	var nodes = nodeData.nodes;
 
 	var nodeList = [];
+	var macList = [];
 
 	for (var id in nodes) {
 		try {
@@ -17,8 +18,17 @@ var nodeListTransform = function (nodeData) {
 		} catch (e) {}
 	}
 
-	return nodeList.map(function (node) {
-			return node.macs[0] + "|" + node.hostname
+	nodeList.forEach(function (node) {
+		node.macs.forEach(function (mac) {
+			macList.push({
+				hostname: node.hostname,
+				mac: mac
+			});
+		});
+	});
+
+	return macList.map(function (node) {
+			return node.mac + "|" + node.hostname
 		});
 };
 
