@@ -3,6 +3,27 @@ var nodeListTransform = function (nodeData) {
 
 	var nodeList = [];
 	var macList = [];
+	var extendedMacList = [];
+
+	var nodeWithPreviousMac = function (node) {
+		var macParts = node.mac.split(":");
+		macParts[1] = (parseInt(macParts[1], 16) + 1).toString(16);
+
+		return {
+			hostname: node.hostname,
+			mac: macParts.join(":")
+		};
+	}
+
+	var nodeWithNextMac = function (node) {
+		var macParts = node.mac.split(":");
+		macParts[1] = (parseInt(macParts[1], 16) - 1).toString(16);
+
+		return {
+			hostname: node.hostname,
+			mac: macParts.join(":")
+		};
+	}
 
 	for (var id in nodes) {
 		try {
@@ -27,7 +48,13 @@ var nodeListTransform = function (nodeData) {
 		});
 	});
 
-	return macList.map(function (node) {
+	macList.forEach(function (node) {
+		extendedMacList.push(node);
+		extendedMacList.push(nodeWithPreviousMac(node));
+		extendedMacList.push(nodeWithNextMac(node));
+	});
+
+	return extendedMacList.map(function (node) {
 			return node.mac + "|" + node.hostname
 		});
 };
