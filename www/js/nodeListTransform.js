@@ -5,9 +5,9 @@ var nodeListTransform = function (nodeData) {
 	var macList = [];
 	var extendedMacList = [];
 
-	var nodeWithPreviousMac = function (node) {
+	var nodeWithOffsetMac = function (node, offset) {
 		var macParts = node.mac.split(":");
-		macParts[1] = (parseInt(macParts[1], 16) + 1).toString(16);
+		macParts[1] = (parseInt(macParts[1], 16) + offset).toString(16);
 
 		return {
 			hostname: node.hostname,
@@ -15,14 +15,12 @@ var nodeListTransform = function (nodeData) {
 		};
 	}
 
-	var nodeWithNextMac = function (node) {
-		var macParts = node.mac.split(":");
-		macParts[1] = (parseInt(macParts[1], 16) - 1).toString(16);
+	var nodeWithPreviousMac = function (node) {
+		return nodeWithOffsetMac(node, -1);
+	}
 
-		return {
-			hostname: node.hostname,
-			mac: macParts.join(":")
-		};
+	var nodeWithNextMac = function (node) {
+		return nodeWithOffsetMac(node, +1);
 	}
 
 	for (var id in nodes) {
