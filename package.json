@@ -6,7 +6,8 @@
   "dependencies": {
     "cordova": "~5.3.3",
     "mocha": "~2.3.3",
-    "chai": "~3.3.0"
+    "chai": "~3.3.0",
+    "knockout": "~3.3.0"
   },
   "devDependencies": {},
   "scripts": {
