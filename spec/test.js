@@ -1,5 +1,6 @@
 var assert = require("chai").assert
 var nodeListTransform = require("../www/js/nodeListTransform.js")
+var FfAliasList = require("../www/js/models.js").FfAliasList;
 
 describe("Wifi Analyzer alias list", function () {
 	it("should list a simple node", function () {
@@ -114,5 +115,11 @@ describe("Wifi Analyzer alias list", function () {
 		assert.include(result, "99:ee:ee:ee:01:01|host-one (99:ee:ee:ee:01:01)");
 		assert.include(result, "99:ef:ee:ee:01:01|host-one (99:ef:ee:ee:01:01)");
 		assert.include(result, "99:ed:ee:ee:01:01|host-one (99:ed:ee:ee:01:01)");
+	});
+});
+
+describe("App view model", function () {
+	it("should instantiate", function () {
+		var app = new FfAliasList();
 	});
 });

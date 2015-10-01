@@ -58,3 +58,6 @@ var app = {
 };
 
 app.init();
+
+var ffAliasList = new FfAliasList();
+ko.applyBindings(ffAliasList);
