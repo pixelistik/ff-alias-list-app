@@ -2,12 +2,17 @@
 	var FfAliasList = function () {
 		var self = this;
 		self.status = ko.observable("");
+		self.domains = ko.observableArray([
+			{name: "ffdus", dataUrl: "http://map.ffdus.de/data/nodes.json"},
+			{name: "ffrl", dataUrl: "http://ffmap.freifunk-rheinland.net/nodes.json"}
+		]);
+		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
 
 		self.saveAliasList = function () {
 			self.status("Lade...");
 
 			var request = new XMLHttpRequest();
-			request.open('GET', 'http://map.ffdus.de/data/nodes.json', true);
+			request.open("GET", self.selectedDomainDataUrl(), true);
 
 			request.onload = function() {
 			  if (this.status >= 200 && this.status < 400) {

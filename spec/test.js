@@ -145,9 +145,12 @@ describe("App view model", function () {
 			models.__set__("XMLHttpRequest", xhr);
 
 			app.saveAliasList();
+			app.selectedDomainDataUrl("http://ffmap.freifunk-rheinland.net/nodes.json");
+			app.saveAliasList();
 
-			assert.equal(requests.length, 1);
+			assert.equal(requests.length, 2);
 			assert.equal(requests[0].url, "http://map.ffdus.de/data/nodes.json");
+			assert.equal(requests[1].url, "http://ffmap.freifunk-rheinland.net/nodes.json");
 		});
 	});
 });
