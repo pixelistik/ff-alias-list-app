@@ -1,6 +1,9 @@
+var rewire = require("rewire");
 var assert = require("chai").assert
+var sinon = require("sinon")
 var nodeListTransform = require("../www/js/nodeListTransform.js")
-var FfAliasList = require("../www/js/models.js").FfAliasList;
+var models = rewire("../www/js/models.js");
+var FfAliasList = rewire("../www/js/models.js").FfAliasList;
 
 describe("Wifi Analyzer alias list", function () {
 	it("should list a simple node", function () {
@@ -119,7 +122,32 @@ describe("Wifi Analyzer alias list", function () {
 });
 
 describe("App view model", function () {
+	var app;
+
+	beforeEach(function () {
+		app = new FfAliasList();
+	});
+
 	it("should instantiate", function () {
-		var app = new FfAliasList();
+		assert.isDefined(app);
+	});
+
+	describe("Data download", function () {
+		it("should download from the correct URL", function () {
+			var xhr = sinon.useFakeXMLHttpRequest();
+
+			var requests = [];
+
+			xhr.onCreate = function (xhr) {
+				requests.push(xhr);
+			};
+
+			models.__set__("XMLHttpRequest", xhr);
+
+			app.saveAliasList();
+
+			assert.equal(requests.length, 1);
+			assert.equal(requests[0].url, "http://map.ffdus.de/data/nodes.json");
+		});
 	});
 });

@@ -7,7 +7,9 @@
     "cordova": "~5.3.3",
     "mocha": "~2.3.3",
     "chai": "~3.3.0",
-    "knockout": "~3.3.0"
+    "knockout": "~3.3.0",
+    "sinon": "~1.17.1",
+    "rewire": "~2.3.4"
   },
   "devDependencies": {},
   "scripts": {
