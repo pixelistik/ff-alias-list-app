@@ -1,7 +1,15 @@
-Proof-of-concept app.
+## Mission
 
-Click "Save List" in order to download the node list from http://map.ffdus.de/
-and convert it into an Alias file for Wifi Analyzer.
+Debug Freifunk wifi nodes with the popular
+[Wifi Analyzer](https://play.google.com/store/apps/details?id=com.farproc.wifi.analyzer)
+app - and get the human readably node names displayed, instead of their MAC
+addresses.
 
-It will be saved to your SD card as WifiAnalyzer_Alias.txt. Then, you can open
-Wifi Analyzer and do Settings > Manage aliases > Import.
+## How
+
+Wifi Analyzer has an "Alias" feature, which can import a list of aliases from
+a file `WifiAnalyzer_Alias.txt` from your phone's SD storage.
+
+This app will generate such an alias file in the correct location, so you
+can import it: open Wifi Analyzer and do Settings > Manage aliases > Import.
+
