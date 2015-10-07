@@ -9,7 +9,8 @@
     "chai": "~3.3.0",
     "knockout": "~3.3.0",
     "sinon": "~1.17.1",
-    "rewire": "~2.3.4"
+    "rewire": "~2.3.4",
+    "material-design-lite": "~1.0.5"
   },
   "devDependencies": {},
   "scripts": {

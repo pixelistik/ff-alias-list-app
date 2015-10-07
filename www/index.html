@@ -28,28 +28,55 @@
 			* Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
 				* Enable inline JS: add 'unsafe-inline' to default-src
 		-->
-		<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; media-src *">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="msapplication-tap-highlight" content="no">
 		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-		<link rel="stylesheet" type="text/css" href="css/index.css">
+		<!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+		<link rel="stylesheet" type="text/css" href="lib/material-design-lite/material.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<title>Freifunk Alias List</title>
 	</head>
 	<body>
-		<div class="app">
-			<h1>Freifunk Alias List</h1>
-			<select data-bind="options: domains,
-				optionsText: 'name',
-				optionsValue: 'dataUrl',
-				value: selectedDomainDataUrl">
-			</select>
-			<button id="save-list-button" data-bind="click: saveAliasList">Save List</button>
-			<p id="status" data-bind="text: status"></p>
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header ">
+			<header class="mdl-layout__header mdl-layout__header--scroll ffa-header">
+				<div class="mdl-layout__header-row ffa-header-row">
+					<span class="mdl-layout-title">Freifunk Alias List</span>
+					<div class="mdl-layout-spacer"></div>
+					<!--<nav class="mdl-navigation">
+						<a class="mdl-navigation__link" href="about.html">About</a>
+					</nav>-->
+				</div>
+			</header>
+			<main class="mdl-layout__content">
+				<p>
+					<ol>
+						<li>Domain auswählen</li>
+						<li>Liste speichern</li>
+						<li>Im WifiAnalyzer unter <i>Einstellungen - Manage aliases - Import</i> die Liste laden</li>
+					</ol>
+				<p class="mdl-typography--text-center">
+					<select data-bind="options: domains,
+						optionsText: 'name',
+						optionsValue: 'dataUrl',
+						value: selectedDomainDataUrl">
+					</select>
+				</p>
+				<p class="mdl-typography--text-center">
+					<button data-bind="click: saveAliasList" class="mdl-button mdl-js-button mdl-button--raised">
+						Save List
+					</button>
+				</p>
+				<p  class="mdl-typography--text-center" data-bind="text: status"></p>
+			</main>
 		</div>
 		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="lib/material-design-lite/material.min.js"></script>
 		<script type="text/javascript" src="js/lib/knockout-latest.js"></script>
 		<script type="text/javascript" src="js/nodeListTransform.js"></script>
 		<script type="text/javascript" src="js/models.js"></script>
 		<script type="text/javascript" src="js/app.js"></script>
 	</body>
 </html>
+
