@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.pixelistik.ffaliaslist" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="de.pixelistik.ffaliaslist" version="0.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Freifunk Alias List</name>
     <description>
-        FF-Alias-List
+        Debug Freifunk wifi nodes with the popular Wifi Analyzer app - and get
+        the human readably node names displayed, instead of their MAC addresses.
     </description>
     <author email="code ät pixelistik.de" href="http://pixelistik.de">
         pixelistik
