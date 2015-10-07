@@ -30,7 +30,7 @@
 						file.createWriter(function(fileWriter) {
 							var blob = new Blob([text], {type:'text/plain'});
 							fileWriter.write(blob);
-							self.status("OK");
+							self.status("Fertig.");
 							window.setTimeout(function () {
 								self.status("");
 							}, 3000);
