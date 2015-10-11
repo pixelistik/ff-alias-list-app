@@ -20,3 +20,14 @@ var requestToCommunityList = function (error, response, body) {
 
 	return communities;
 };
+
+var addCommunityData = function (community, done) {
+	request(community.communityUrl, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			community.communityData = JSON.parse(body);
+			done(null, community)
+		} else {
+			done("Error while requesting " + community.communityUrl);
+		}
+	});
+};

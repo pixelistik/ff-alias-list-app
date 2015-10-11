@@ -180,7 +180,35 @@ describe("Domain list from Freifunk API", function () {
 			);
 		});
 	});
-	describe("Node data URL extraction", function () {});
-	describe("Domain list generation", function () {});
+
+	describe("Request data for each Community", function () {
+		it("should add the data requested from each Community's URL", function () {
+			var request = sinon.stub();
+			request.yields(null, {statusCode: 200}, '{"testCommunityData": "test"}');
+
+			domainListFromFreifunkApi.__set__("request", request);
+
+			var done = sinon.spy();
+
+			domainListFromFreifunkApi.__get__("addCommunityData")({
+				communityId: "aachen",
+				communityUrl: "https://raw.githubusercontent.com/ffac/api-file/master/acffapi.json"
+			}, done);
+
+			assert(request.calledOnce);
+			assert.equal(request.getCall(0).args[0], "https://raw.githubusercontent.com/ffac/api-file/master/acffapi.json");
+
+			assert(done.calledOnce);
+
+			var result = done.getCall(0).args[1];
+			assert.deepEqual(result, {
+				communityId: "aachen",
+				communityUrl: "https://raw.githubusercontent.com/ffac/api-file/master/acffapi.json",
+				communityData: {
+					testCommunityData: "test"
+				}
+			});
+		});
+	});
 });
 
