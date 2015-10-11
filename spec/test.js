@@ -210,5 +210,52 @@ describe("Domain list from Freifunk API", function () {
 			});
 		});
 	});
+
+	describe("Filter for only Communities with ffmap maps", function () {
+		it("should correctly include a community with a single ffmap", function () {
+			var result = domainListFromFreifunkApi.__get__("communityHasFfmapMap")({
+				communityData: {
+					nodeMaps: [{technicalType: "ffmap"}]
+				}
+			});
+
+			assert.strictEqual(result, true);
+		});
+
+		it("should correctly include a community with ffmap as one of multiple maps", function () {
+			var result = domainListFromFreifunkApi.__get__("communityHasFfmapMap")({
+				communityData: {
+					nodeMaps: [
+						{},
+						{technicalType: "other"},
+						{technicalType: "ffmap"}
+					]
+				}
+			});
+
+			assert.strictEqual(result, true);
+		});
+
+		it("should correctly exclude a community without any map info", function () {
+			var result = domainListFromFreifunkApi.__get__("communityHasFfmapMap")({
+				communityData: {}
+			});
+
+			assert.strictEqual(result, false);
+		});
+
+		it("should correctly exclude a community with no ffmap", function () {
+			var result = domainListFromFreifunkApi.__get__("communityHasFfmapMap")({
+				communityData: {
+					nodeMaps: [
+						{},
+						{technicalType: "other"}
+					]
+				}
+			});
+
+			assert.strictEqual(result, false);
+		});
+	});
 });
 

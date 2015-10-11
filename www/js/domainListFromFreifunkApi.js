@@ -31,3 +31,15 @@ var addCommunityData = function (community, done) {
 		}
 	});
 };
+
+var communityHasFfmapMap = function (community) {
+	if(!community.communityData.nodeMaps) {
+		return false;
+	}
+	return community.communityData.nodeMaps.reduce(
+		function (result, item) {
+			return result || item.technicalType === "ffmap";
+		},
+		false
+	);
+}
