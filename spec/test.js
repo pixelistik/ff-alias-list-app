@@ -257,5 +257,89 @@ describe("Domain list from Freifunk API", function () {
 			assert.strictEqual(result, false);
 		});
 	});
+
+	describe("Map URL to node data URL conversion", function () {
+		describe("legacy ffmap map", function () {
+			it("should convert a single map with graph.html url", function () {
+				var result = domainListFromFreifunkApi.__get__("mapUrlToNodeDataUrl")({
+					communityData: {
+						nodeMaps: [{
+							technicalType: "ffmap",
+							url: "http://example.com/map/graph.html"
+						}]
+					}
+				});
+
+				assert.equal(result.nodeDataUrl, "http://example.com/map/nodes.json");
+			});
+
+			it("should convert a single map with geomap.html url", function () {
+				var result = domainListFromFreifunkApi.__get__("mapUrlToNodeDataUrl")({
+					communityData: {
+						nodeMaps: [{
+							technicalType: "ffmap",
+							url: "http://example.com/map/geomap.html"
+						}]
+					}
+				});
+
+				assert.equal(result.nodeDataUrl, "http://example.com/map/nodes.json");
+			});
+
+			it("should convert a single map with list.html url", function () {
+				var result = domainListFromFreifunkApi.__get__("mapUrlToNodeDataUrl")({
+					communityData: {
+						nodeMaps: [{
+							technicalType: "ffmap",
+							url: "http://example.com/map/list.html"
+						}]
+					}
+				});
+
+				assert.equal(result.nodeDataUrl, "http://example.com/map/nodes.json");
+			});
+		});
+
+		describe("Mapviewer map", function () {
+			it("should keep an existing nodes.json url", function () {
+				var result = domainListFromFreifunkApi.__get__("mapUrlToNodeDataUrl")({
+					communityData: {
+						nodeMaps: [{
+							technicalType: "ffmap",
+							url: "http://example.com/map/data/nodes.json"
+						}]
+					}
+				});
+
+				assert.equal(result.nodeDataUrl, "http://example.com/map/data/nodes.json");
+			});
+
+			it("should extend a base url", function () {
+				var result = domainListFromFreifunkApi.__get__("mapUrlToNodeDataUrl")({
+					communityData: {
+						nodeMaps: [{
+							technicalType: "ffmap",
+							url: "http://example.com/map"
+						}]
+					}
+				});
+
+				assert.equal(result.nodeDataUrl, "http://example.com/map/data/nodes.json");
+			});
+
+			it("should extend a base url with trailing slash", function () {
+				var result = domainListFromFreifunkApi.__get__("mapUrlToNodeDataUrl")({
+					communityData: {
+						nodeMaps: [{
+							technicalType: "ffmap",
+							url: "http://example.com/map/"
+						}]
+					}
+				});
+
+				assert.equal(result.nodeDataUrl, "http://example.com/map/data/nodes.json");
+			});
+		});
+	});
 });
 

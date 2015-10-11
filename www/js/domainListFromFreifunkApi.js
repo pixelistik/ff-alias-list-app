@@ -43,3 +43,28 @@ var communityHasFfmapMap = function (community) {
 		false
 	);
 }
+
+var mapUrlToNodeDataUrl = function (community) {
+	var firstFfmapUrl = community.communityData.nodeMaps
+		.filter(function (nodeMap) {
+			return nodeMap.technicalType && nodeMap.technicalType === "ffmap";
+		})[0].url;
+
+	community.nodeDataUrl = firstFfmapUrl
+		.replace("graph.html", "nodes.json")
+		.replace("geomap.html", "nodes.json")
+		.replace("list.html", "nodes.json");
+
+	if(community.nodeDataUrl.indexOf(".json") === -1) {
+		var slash;
+		if(firstFfmapUrl.substr(-1) === "/") {
+			slash = "";
+		} else {
+			slash = "/";
+		}
+
+		community.nodeDataUrl = firstFfmapUrl + slash + "data/nodes.json";
+	}
+
+	return community;
+};
