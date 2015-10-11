@@ -4,6 +4,7 @@ var sinon = require("sinon")
 var nodeListTransform = require("../www/js/nodeListTransform.js")
 var models = rewire("../www/js/models.js");
 var FfAliasList = rewire("../www/js/models.js").FfAliasList;
+var domainListFromFreifunkApi = rewire("../www/js/domainListFromFreifunkApi");
 
 describe("Wifi Analyzer alias list", function () {
 	it("should list a simple node", function () {
@@ -154,3 +155,32 @@ describe("App view model", function () {
 		});
 	});
 });
+
+describe("Domain list from Freifunk API", function () {
+	describe("Request to Community List", function () {
+		it("should return an array of Communities on success", function () {
+			var result = domainListFromFreifunkApi.__get__("requestToCommunityList")(
+				null,
+				{statusCode: 200},
+				'{ "aachen" : "https://raw.githubusercontent.com/ffac/api-file/master/acffapi.json", "altdorf" : "http://freifunk-altdorf.de/FreifunkAltdorf-api.json"}'
+			);
+
+			assert.deepEqual(
+				result,
+				[
+					{
+						communityId: "aachen",
+						communityUrl: "https://raw.githubusercontent.com/ffac/api-file/master/acffapi.json"
+					},
+					{
+						communityId: "altdorf",
+						communityUrl: "http://freifunk-altdorf.de/FreifunkAltdorf-api.json"
+					}
+				]
+			);
+		});
+	});
+	describe("Node data URL extraction", function () {});
+	describe("Domain list generation", function () {});
+});
+
