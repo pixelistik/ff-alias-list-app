@@ -16,8 +16,17 @@ var requestToCommunityList = function (error, response, body) {
 				communityUrl: directory[community]
 			});
 		}
+	} else {
+		console.log(error);
+		console.log(response);
 	}
 
+	async.map(communities, addCommunityData, function (err, communities) {
+		var result = communities
+			.filter(communityHasFfmapMap)
+			.map(mapUrlToNodeDataUrl);
+		console.log(result);
+	});
 	return communities;
 };
 
@@ -33,7 +42,7 @@ var addCommunityData = function (community, done) {
 };
 
 var communityHasFfmapMap = function (community) {
-	if(!community.communityData.nodeMaps) {
+	if(!community || !community.communityData || !community.communityData.nodeMaps) {
 		return false;
 	}
 	return community.communityData.nodeMaps.reduce(
@@ -68,3 +77,10 @@ var mapUrlToNodeDataUrl = function (community) {
 
 	return community;
 };
+
+
+var domainListFromFreifunkApi = function () {
+	request(DIRECTORY_URL, requestToCommunityList)
+};
+
+domainListFromFreifunkApi();
