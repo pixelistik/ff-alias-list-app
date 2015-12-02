@@ -24,7 +24,16 @@
 				{name: 'pinneberg', dataUrl: 'http://meshviewer.pinneberg.freifunk.net/data/nodes.json' },
 				{name: 'ratingen', dataUrl: 'http://ffmap.freifunk-rheinland.net/nodes.json' },
 				{name: 'troisdorf', dataUrl: 'https://map.freifunk-troisdorf.de/data/nodes.json' },
-				{name: 'warendorf', dataUrl: 'https://freifunk-muensterland.de/map/data/nodes.json' }
+				{name: 'warendorf', dataUrl: 'https://freifunk-muensterland.de/map/data/nodes.json' },
+				{name: 'moehne-arnsberg', dataUrl: 'http://map.freifunk-moehne.de/data-arnsberg/nodes.json' },
+				{name: 'moehne-balvekierspe', dataUrl: 'http://map.freifunk-moehne.de/data-balvekierspe/nodes.json' },
+				{name: 'moehne-biggesee', dataUrl: 'http://map.freifunk-moehne.de/data-biggesee/nodes.json' },
+				{name: 'moehne-meschedebestwig', dataUrl: 'http://map.freifunk-moehne.de/data-meschedebestwig/nodes.json' },
+				{name: 'moehne-moehnequelle', dataUrl: 'http://map.freifunk-moehne.de/data-moehnequelle/nodes.json' },
+				{name: 'moehne-moehnesee', dataUrl: 'http://map.freifunk-moehne.de/data-moehnesee/nodes.json' },
+				{name: 'moehne-soest', dataUrl: 'http://map.freifunk-moehne.de/data-soest/nodes.json' },
+				{name: 'moehne-soesterumland', dataUrl: 'http://map.freifunk-moehne.de/data-soesterumland/nodes.json' },
+				{name: 'moehne-sundern', dataUrl: 'http://map.freifunk-moehne.de/data-sundern/nodes.json' }
 			].sort(function(a, b){return a.name.localeCompare(b.name)})
 		);
 		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
