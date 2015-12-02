@@ -28,11 +28,14 @@
 			try {
 				if (
 					typeof nodes[id].nodeinfo.hostname !== "undefined" &&
-					typeof nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless !== "undefined"
+					(
+						typeof nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless !== "undefined" ||
+						typeof nodes[id].nodeinfo.network.mesh.bat0.interfaces.other !== "undefined"
+					)
 				) {
 					nodeList.push({
 						hostname: nodes[id].nodeinfo.hostname,
-						macs: nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless
+						macs: nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless || nodes[id].nodeinfo.network.mesh.bat0.interfaces.other
 					});
 				}
 			} catch (e) {}
