@@ -2,6 +2,7 @@ var DIRECTORY_URL = "https://github.com/freifunk/directory.api.freifunk.net/raw/
 
 var request = require('request');
 var async = require("async");
+var nodeListTransform = require("./nodeListTransform.js");
 
 var requestToCommunityList = function (error, response, body) {
 	var communities = [];
@@ -20,12 +21,24 @@ var requestToCommunityList = function (error, response, body) {
 		console.log(error);
 		console.log(response);
 	}
-
+	console.log(communities.length + " communities total.");
 	async.map(communities, addCommunityData, function (err, communities) {
-		var result = communities
+		var communitiesWithNodeDataUrl = communities
 			.filter(communityHasFfmapMap)
 			.map(mapUrlToNodeDataUrl);
-		console.log(result);
+			console.log(communitiesWithNodeDataUrl.length + " communities with Ffmap.");
+
+			async.filter(communitiesWithNodeDataUrl, communityNodeListHasEntries, function (communitiesWithNonEmptyNodeList) {
+				var communityList = communitiesWithNonEmptyNodeList.map(function (community) {
+					return {
+						communityId: community.communityId,
+						nodeDataUrl: community.nodeDataUrl
+					};
+				});
+
+				console.log(communityList.length + " communities with at least 1 nodes entry.");
+				console.log(communityList);
+			});
 	});
 	return communities;
 };
@@ -33,11 +46,16 @@ var requestToCommunityList = function (error, response, body) {
 var addCommunityData = function (community, done) {
 	request(community.communityUrl, function (error, response, body) {
 		if (!error && response.statusCode == 200) {
-			community.communityData = JSON.parse(body);
-			done(null, community)
+			try {
+				community.communityData = JSON.parse(body);
+			} catch (e) {
+				console.log("Exception while parsing community data from " + community.communityUrl + ": " + e);
+			}
 		} else {
-			done("Error while requesting " + community.communityUrl);
+			console.log("Error while requesting " + community.communityUrl + ": " + (error || response.statusCode));
 		}
+
+		done(null, community);
 	});
 };
 
@@ -78,7 +96,25 @@ var mapUrlToNodeDataUrl = function (community) {
 	return community;
 };
 
+var communityNodeListHasEntries = function (community, done) {
+	var url = community.nodeDataUrl;
 
+	request(url, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			var result = false;
+			try {
+				var nodeData = JSON.parse(body);
+				result = nodeListTransform(nodeData).length > 0;
+			} catch(e) {
+				console.log("Error while parsing node list from " + url + ": " + e);
+			}
+			done(result);
+		} else {
+			console.log("Error while requesting nodes list from " + url + ": " + (error || response.statusCode));
+			done(false);
+		}
+	});
+}
 var domainListFromFreifunkApi = function () {
 	request(DIRECTORY_URL, requestToCommunityList)
 };
