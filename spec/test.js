@@ -145,6 +145,7 @@ describe("App view model", function () {
 
 			models.__set__("XMLHttpRequest", xhr);
 
+			app.selectedDomainDataUrl("http://map.ffdus.de/data/nodes.json");
 			app.saveAliasList();
 			app.selectedDomainDataUrl("http://ffmap.freifunk-rheinland.net/nodes.json");
 			app.saveAliasList();
@@ -342,4 +343,3 @@ describe("Domain list from Freifunk API", function () {
 		});
 	});
 });
-

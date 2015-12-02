@@ -2,10 +2,31 @@
 	var FfAliasList = function () {
 		var self = this;
 		self.status = ko.observable("");
-		self.domains = ko.observableArray([
-			{name: "ffdus", dataUrl: "http://map.ffdus.de/data/nodes.json"},
-			{name: "ffrl", dataUrl: "http://ffmap.freifunk-rheinland.net/nodes.json"}
-		]);
+		self.domains = ko.observableArray(
+			[
+				{name: "ffdus (Freifunk Flingern)", dataUrl: "http://map.ffdus.de/data/nodes.json"},
+				{name: "freifunk-duesseldorf", dataUrl: "http://map.freifunk-duesseldorf.de/nodes.json"},
+				{name: "freifunk-rheinland", dataUrl: "http://ffmap.freifunk-rheinland.net/nodes.json"},
+				{name: 'bestwig', dataUrl: 'http://freifunk-bestwig.de/nodes_json_wrapper.php/data/nodes.json' },
+				{name: 'bremen', dataUrl: 'http://bremen.freifunk.net/map/nodes.json' },
+				{name: 'brilon', dataUrl: 'http://freifunk-brilon.net/nodes.json' },
+				{name: 'euskirchen', dataUrl: 'http://map.freifunk-euskirchen.de/data/nodes.json' },
+				{name: 'flensburg', dataUrl: 'http://map.freifunk-flensburg.de/data/nodes.json' },
+				{name: 'frankfurt_am_main', dataUrl: 'http://map.ffm.freifunk.net/data/nodes.json' },
+				{name: 'hattingen', dataUrl: 'http://map.en.freifunk.ruhr/enkreis/data/nodes.json' },
+				{name: 'krefeld', dataUrl: 'http://map.freifunk-ruhrgebiet.de/data/nodes.json' },
+				{name: 'luebeck', dataUrl: 'https://map.luebeck.freifunk.net/data/nodes.json' },
+				{name: 'mayen-koblenz', dataUrl: 'http://map.freifunk-myk.de/data/nodes.json' },
+				{name: 'muensterland', dataUrl: 'https://freifunk-muensterland.de/map/data/nodes.json' },
+				{name: 'neukirchen-vluyn', dataUrl: 'http://api.freifunk-niersufer.de/nv/nodes.json' },
+				{name: 'ostholstein', dataUrl: 'http://ostholstein.freifunk.net/map/nodes.json' },
+				{name: 'paderborn', dataUrl: 'http://map.paderborn.freifunk.net/data/nodes.json' },
+				{name: 'pinneberg', dataUrl: 'http://meshviewer.pinneberg.freifunk.net/data/nodes.json' },
+				{name: 'ratingen', dataUrl: 'http://ffmap.freifunk-rheinland.net/nodes.json' },
+				{name: 'troisdorf', dataUrl: 'https://map.freifunk-troisdorf.de/data/nodes.json' },
+				{name: 'warendorf', dataUrl: 'https://freifunk-muensterland.de/map/data/nodes.json' }
+			].sort(function(a, b){return a.name.localeCompare(b.name)})
+		);
 		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
 
 		self.saveAliasList = function () {
