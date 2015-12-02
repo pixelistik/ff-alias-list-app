@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.pixelistik.ffaliaslist" version="0.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="de.pixelistik.ffaliaslist" version="9.9.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <!-- Version will be overridden from git tag by hooks/after_prepare/version-from-git.sh -->
     <name>Freifunk Alias List</name>
     <description>
         Debug Freifunk wifi nodes with the popular Wifi Analyzer app - and get
