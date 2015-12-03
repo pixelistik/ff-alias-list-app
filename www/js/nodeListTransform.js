@@ -1,41 +1,23 @@
 (function (window) {
 	var nodeListTransform = function (nodeData) {
+		var deriveClientMacs = function () {
+			return "foo";
+		};
+
 		var nodes = nodeData.nodes;
 
 		var nodeList = [];
 		var macList = [];
-		var extendedMacList = [];
-
-		var nodeWithOffsetMac = function (node, offset) {
-			var macParts = node.mac.split(":");
-			macParts[1] = (parseInt(macParts[1], 16) + offset).toString(16);
-
-			return {
-				hostname: node.hostname,
-				mac: macParts.join(":")
-			};
-		}
-
-		var nodeWithPreviousMac = function (node) {
-			return nodeWithOffsetMac(node, -1);
-		}
-
-		var nodeWithNextMac = function (node) {
-			return nodeWithOffsetMac(node, +1);
-		}
 
 		for (var id in nodes) {
 			try {
 				if (
 					typeof nodes[id].nodeinfo.hostname !== "undefined" &&
-					(
-						typeof nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless !== "undefined" ||
-						typeof nodes[id].nodeinfo.network.mesh.bat0.interfaces.other !== "undefined"
-					)
+					typeof nodes[id].nodeinfo.network.mac !== "undefined"
 				) {
 					nodeList.push({
 						hostname: nodes[id].nodeinfo.hostname,
-						macs: nodes[id].nodeinfo.network.mesh.bat0.interfaces.wireless || nodes[id].nodeinfo.network.mesh.bat0.interfaces.other
+						macs: [nodes[id].nodeinfo.network.mac]
 					});
 				}
 			} catch (e) {}
@@ -50,10 +32,28 @@
 			});
 		});
 
+		/**
+		 * Derive MACs of the public client MACs from primary MAC
+		 *
+		 * @see https://forum.freifunk.net/t/wifi-analyzer-alias-app/8475/11
+		 */
+		var nodeWithDerivedClientMac = function (node, offset) {
+			var macParts = node.mac.split(":");
+			macParts[0] = (parseInt(macParts[0], 16) + 2).toString(16);
+			macParts[1] = (parseInt(macParts[1], 16) + 2).toString(16);
+			macParts[2] = (parseInt(macParts[2], 16) + offset).toString(16);
+
+			return {
+				hostname: node.hostname,
+				mac: macParts.join(":")
+			};
+		}
+		
+		var extendedMacList = [];
+
 		macList.forEach(function (node) {
-			extendedMacList.push(node);
-			extendedMacList.push(nodeWithPreviousMac(node));
-			extendedMacList.push(nodeWithNextMac(node));
+			extendedMacList.push(nodeWithDerivedClientMac(node, 1));
+			extendedMacList.push(nodeWithDerivedClientMac(node, 2));
 		});
 
 		return extendedMacList.map(function (node) {
