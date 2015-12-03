@@ -1,0 +1,10 @@
+{
+	"android":
+		{
+			"release":
+				{
+					"keystore": "../android-releasekey.keystore",
+					"alias": "releasekey"
+				}
+		}
+}
