@@ -18,3 +18,7 @@
 .ffa-progress-bar.mdl-progress > .bar3 {
 	background-color: #df0066;
 }
+
+a {
+	color: inherit;
+}
