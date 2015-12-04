@@ -38,6 +38,19 @@
 		);
 		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
 
+		self.platformReady = ko.observable(false);
+		if (typeof cordova !== "undefined") {
+			document.addEventListener(
+				'deviceready',
+				function () {
+					self.platformReady(true);
+				},
+				false
+			);
+		} else {
+			self.platformReady(true);
+		}
+
 		self.saveAliasList = function () {
 			self.status("Lade...");
 
