@@ -50,6 +50,9 @@
 				</div>
 			</header>
 			<main class="mdl-layout__content">
+				<div class="ffa-progress-bar-wrapper">
+					<div class="ffa-progress-bar mdl-progress mdl-js-progress mdl-progress__indeterminate" data-bind="visible: processIsRunning"></div>
+				</div>
 				<p>
 					<ol>
 						<li>Domain auswählen</li>
@@ -64,7 +67,7 @@
 					</select>
 				</p>
 				<p class="mdl-typography--text-center">
-					<button data-bind="enable: platformReady, click: saveAliasList" class="mdl-button mdl-js-button mdl-button--raised">
+					<button data-bind="enable: platformReady, disable: processIsRunning, click: saveAliasList" class="mdl-button mdl-js-button mdl-button--raised">
 						Liste speichern
 					</button>
 				</p>

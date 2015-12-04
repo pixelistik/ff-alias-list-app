@@ -6,3 +6,15 @@
 .ffa-header-row {
 	padding: 0 20px;
 }
+
+.ffa-progress-bar-wrapper {
+	height: 4px;
+}
+.ffa-progress-bar {
+	width: 100%;
+}
+
+.ffa-progress-bar.mdl-progress > .bar1,
+.ffa-progress-bar.mdl-progress > .bar3 {
+	background-color: #df0066;
+}

@@ -1,6 +1,7 @@
 (function (window, ko) {
 	var FfAliasList = function () {
 		var self = this;
+		self.processIsRunning = ko.observable(false);
 		self.status = ko.observable("");
 		self.domains = ko.observableArray(
 			[
@@ -52,6 +53,7 @@
 		}
 
 		self.saveAliasList = function () {
+			self.processIsRunning(true);
 			self.status("Lade...");
 
 			var request = new XMLHttpRequest();
@@ -73,6 +75,7 @@
 						file.createWriter(function(fileWriter) {
 							var blob = new Blob([text], {type:'text/plain'});
 							fileWriter.write(blob);
+							self.processIsRunning(false);
 							self.status("Fertig.");
 							window.setTimeout(function () {
 								self.status("");
@@ -83,18 +86,21 @@
 
 			  } else {
 				// We reached our target server, but it returned an error
+				self.processIsRunning(false);
 				self.status("Serverfehler!");
 			  }
 			};
 
 			request.onerror = function() {
 				// There was a connection error of some sort
+				self.processIsRunning(false);
 				self.status("Verbindungsfehler! Hast du Internet?");
 			};
 
 			request.send();
 
 			function fail(e) {
+				self.processIsRunning(false);
 				self.status("Exception: " + e);
 			}
 
