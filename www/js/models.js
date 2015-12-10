@@ -8,6 +8,7 @@
 				{name: "freifunk-duesseldorf", dataUrl: "http://map.freifunk-duesseldorf.de/nodes.json"},
 				{name: "freifunk-rheinland", dataUrl: "http://ffmap.freifunk-rheinland.net/nodes.json"},
 				{name: 'bestwig', dataUrl: 'http://freifunk-bestwig.de/nodes_json_wrapper.php/data/nodes.json' },
+				{name: 'bochum', dataUrl: 'http://map.freifunk-bochum.de/ffdata/nodes.json' },
 				{name: 'bremen', dataUrl: 'http://bremen.freifunk.net/map/nodes.json' },
 				{name: 'brilon', dataUrl: 'http://freifunk-brilon.net/nodes.json' },
 				{name: 'euskirchen', dataUrl: 'http://map.freifunk-euskirchen.de/data/nodes.json' },
