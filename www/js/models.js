@@ -1,6 +1,7 @@
 (function (window, ko) {
 	var FfAliasList = function () {
 		var self = this;
+		self.processIsRunning = ko.observable(false);
 		self.status = ko.observable("");
 		self.domains = ko.observableArray(
 			[
@@ -11,6 +12,11 @@
 				{name: 'bochum', dataUrl: 'http://map.freifunk-bochum.de/ffdata/nodes.json' },
 				{name: 'bremen', dataUrl: 'http://bremen.freifunk.net/map/nodes.json' },
 				{name: 'brilon', dataUrl: 'http://freifunk-brilon.net/nodes.json' },
+				{name: 'ennepe-ruhr-ennepetal', dataUrl: 'https://map.ff-en.de/data/en/nodes.json' },
+				{name: 'ennepe-ruhr-hagen', dataUrl: 'https://map.ff-en.de/data/hag/nodes.json' },
+				{name: 'ennepe-ruhr-hattingen', dataUrl: 'https://map.ff-en.de/data/hat/nodes.json' },
+				{name: 'ennepe-ruhr-sprockhoevel', dataUrl: 'https://map.ff-en.de/data/spr/nodes.json' },
+				{name: 'ennepe-ruhr-witten', dataUrl: 'https://map.ff-en.de/data/wit/nodes.json' },
 				{name: 'euskirchen', dataUrl: 'http://map.freifunk-euskirchen.de/data/nodes.json' },
 				{name: 'flensburg', dataUrl: 'http://map.freifunk-flensburg.de/data/nodes.json' },
 				{name: 'frankfurt_am_main', dataUrl: 'http://map.ffm.freifunk.net/data/nodes.json' },
@@ -39,7 +45,21 @@
 		);
 		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
 
+		self.platformReady = ko.observable(false);
+		if (typeof cordova !== "undefined") {
+			document.addEventListener(
+				'deviceready',
+				function () {
+					self.platformReady(true);
+				},
+				false
+			);
+		} else {
+			self.platformReady(true);
+		}
+
 		self.saveAliasList = function () {
+			self.processIsRunning(true);
 			self.status("Lade...");
 
 			var request = new XMLHttpRequest();
@@ -61,6 +81,7 @@
 						file.createWriter(function(fileWriter) {
 							var blob = new Blob([text], {type:'text/plain'});
 							fileWriter.write(blob);
+							self.processIsRunning(false);
 							self.status("Fertig.");
 							window.setTimeout(function () {
 								self.status("");
@@ -71,18 +92,21 @@
 
 			  } else {
 				// We reached our target server, but it returned an error
+				self.processIsRunning(false);
 				self.status("Serverfehler!");
 			  }
 			};
 
 			request.onerror = function() {
 				// There was a connection error of some sort
+				self.processIsRunning(false);
 				self.status("Verbindungsfehler! Hast du Internet?");
 			};
 
 			request.send();
 
 			function fail(e) {
+				self.processIsRunning(false);
 				self.status("Exception: " + e);
 			}
 
