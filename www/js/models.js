@@ -40,7 +40,8 @@
 				{name: 'moehne-moehnesee', dataUrl: 'http://map.freifunk-moehne.de/data-moehnesee/nodes.json' },
 				{name: 'moehne-soest', dataUrl: 'http://map.freifunk-moehne.de/data-soest/nodes.json' },
 				{name: 'moehne-soesterumland', dataUrl: 'http://map.freifunk-moehne.de/data-soesterumland/nodes.json' },
-				{name: 'moehne-sundern', dataUrl: 'http://map.freifunk-moehne.de/data-sundern/nodes.json' }
+				{name: 'moehne-sundern', dataUrl: 'http://map.freifunk-moehne.de/data-sundern/nodes.json' },
+				{name: 'westpfalz', dataUrl: 'https://map.freifunk-westpfalz.de/nodes.json' }
 			].sort(function(a, b){return a.name.localeCompare(b.name)})
 		);
 		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
