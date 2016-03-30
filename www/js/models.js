@@ -3,47 +3,44 @@
 		var self = this;
 		self.processIsRunning = ko.observable(false);
 		self.status = ko.observable("");
-		self.domains = ko.observableArray(
-			[
-				{name: "ffdus (Freifunk Flingern)", dataUrl: "http://map.ffdus.de/data/nodes.json"},
-				{name: "freifunk-duesseldorf", dataUrl: "http://map.freifunk-duesseldorf.de/nodes.json"},
-				{name: "freifunk-rheinland", dataUrl: "http://ffmap.freifunk-rheinland.net/nodes.json"},
-				{name: 'bestwig', dataUrl: 'http://freifunk-bestwig.de/nodes_json_wrapper.php/data/nodes.json' },
-				{name: 'bochum', dataUrl: 'http://map.freifunk-bochum.de/ffdata/nodes.json' },
-				{name: 'bremen', dataUrl: 'http://bremen.freifunk.net/map/nodes.json' },
-				{name: 'brilon', dataUrl: 'http://freifunk-brilon.net/nodes.json' },
-				{name: 'ennepe-ruhr-ennepetal', dataUrl: 'https://map.ff-en.de/data/en/nodes.json' },
-				{name: 'ennepe-ruhr-hagen', dataUrl: 'https://map.ff-en.de/data/hag/nodes.json' },
-				{name: 'ennepe-ruhr-hattingen', dataUrl: 'https://map.ff-en.de/data/hat/nodes.json' },
-				{name: 'ennepe-ruhr-sprockhoevel', dataUrl: 'https://map.ff-en.de/data/spr/nodes.json' },
-				{name: 'ennepe-ruhr-witten', dataUrl: 'https://map.ff-en.de/data/wit/nodes.json' },
-				{name: 'euskirchen', dataUrl: 'http://map.freifunk-euskirchen.de/data/nodes.json' },
-				{name: 'flensburg', dataUrl: 'http://map.freifunk-flensburg.de/data/nodes.json' },
-				{name: 'frankfurt_am_main', dataUrl: 'http://map.ffm.freifunk.net/data/nodes.json' },
-				{name: 'hattingen', dataUrl: 'http://map.en.freifunk.ruhr/enkreis/data/nodes.json' },
-				{name: 'krefeld', dataUrl: 'http://map.freifunk-ruhrgebiet.de/data/nodes.json' },
-				{name: 'luebeck', dataUrl: 'https://map.luebeck.freifunk.net/data/nodes.json' },
-				{name: 'mayen-koblenz', dataUrl: 'http://map.freifunk-myk.de/data/nodes.json' },
-				{name: 'muensterland', dataUrl: 'https://freifunk-muensterland.de/map/data/nodes.json' },
-				{name: 'neukirchen-vluyn', dataUrl: 'http://api.freifunk-niersufer.de/nv/nodes.json' },
-				{name: 'ostholstein', dataUrl: 'http://ostholstein.freifunk.net/map/nodes.json' },
-				{name: 'paderborn', dataUrl: 'http://map.paderborn.freifunk.net/data/nodes.json' },
-				{name: 'pinneberg', dataUrl: 'http://meshviewer.pinneberg.freifunk.net/data/nodes.json' },
-				{name: 'ratingen', dataUrl: 'http://ffmap.freifunk-rheinland.net/nodes.json' },
-				{name: 'troisdorf', dataUrl: 'https://map.freifunk-troisdorf.de/data/nodes.json' },
-				{name: 'warendorf', dataUrl: 'https://freifunk-muensterland.de/map/data/nodes.json' },
-				{name: 'moehne-arnsberg', dataUrl: 'http://map.freifunk-moehne.de/data-arnsberg/nodes.json' },
-				{name: 'moehne-balvekierspe', dataUrl: 'http://map.freifunk-moehne.de/data-balvekierspe/nodes.json' },
-				{name: 'moehne-biggesee', dataUrl: 'http://map.freifunk-moehne.de/data-biggesee/nodes.json' },
-				{name: 'moehne-meschedebestwig', dataUrl: 'http://map.freifunk-moehne.de/data-meschedebestwig/nodes.json' },
-				{name: 'moehne-moehnequelle', dataUrl: 'http://map.freifunk-moehne.de/data-moehnequelle/nodes.json' },
-				{name: 'moehne-moehnesee', dataUrl: 'http://map.freifunk-moehne.de/data-moehnesee/nodes.json' },
-				{name: 'moehne-soest', dataUrl: 'http://map.freifunk-moehne.de/data-soest/nodes.json' },
-				{name: 'moehne-soesterumland', dataUrl: 'http://map.freifunk-moehne.de/data-soesterumland/nodes.json' },
-				{name: 'moehne-sundern', dataUrl: 'http://map.freifunk-moehne.de/data-sundern/nodes.json' }
-			].sort(function(a, b){return a.name.localeCompare(b.name)})
-		);
-		self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
+		self.domains = ko.observableArray();
+
+		self.selectedDomainDataUrl = ko.observable();
+
+		self.updateDomainList = function () {
+			var DOMAIN_LIST_URL = "https://raw.githubusercontent.com/pixelistik/ff-alias-list-app/master/data/domains.json";
+
+			self.processIsRunning(true);
+			self.status("Lade Domains...");
+
+			return fetch(DOMAIN_LIST_URL).then(function (response) {
+				if(response.ok) {
+					response.text().then(function (text) {
+						localStorage.setItem("domains", text);
+
+						var domains = JSON.parse(text);
+
+						domains.sort(function(a, b){return a.name.localeCompare(b.name)})
+
+						self.domains(domains);
+
+						self.selectedDomainDataUrl = ko.observable(self.domains()[0].dataUrl);
+
+						self.processIsRunning(false);
+						self.status("");
+					});
+				} else {
+					self.processIsRunning(false);
+					self.status("Domains konnten nicht geladen werden: " + response.statusText);
+				}
+
+			}).catch(function () {
+				self.processIsRunning(false);
+				self.status("Domains konnten nicht geladen werden, Netzwerkfehler.");
+			});
+		};
+
+		self.updateDomainList();
 
 		self.platformReady = ko.observable(false);
 		if (typeof cordova !== "undefined") {
