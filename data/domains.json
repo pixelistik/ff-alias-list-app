@@ -11,6 +11,7 @@
     {"name": "ennepe-ruhr-hattingen", "dataUrl": "https://map.ff-en.de/data/hat/nodes.json" },
     {"name": "ennepe-ruhr-sprockhoevel", "dataUrl": "https://map.ff-en.de/data/spr/nodes.json" },
     {"name": "ennepe-ruhr-witten", "dataUrl": "https://map.ff-en.de/data/wit/nodes.json" },
+    {"name": "ennepe-ruhr-refugee", "dataUrl": "https://map.ff-en.de/data/refugee/nodes.json" },
     {"name": "euskirchen", "dataUrl": "http://map.freifunk-euskirchen.de/data/nodes.json" },
     {"name": "flensburg", "dataUrl": "http://map.freifunk-flensburg.de/data/nodes.json" },
     {"name": "frankfurt_am_main", "dataUrl": "http://map.ffm.freifunk.net/data/nodes.json" },
@@ -35,5 +36,7 @@
     {"name": "moehne-soest", "dataUrl": "http://map.freifunk-moehne.de/data-soest/nodes.json" },
     {"name": "moehne-soesterumland", "dataUrl": "http://map.freifunk-moehne.de/data-soesterumland/nodes.json" },
     {"name": "moehne-sundern", "dataUrl": "http://map.freifunk-moehne.de/data-sundern/nodes.json" },
-    {"name": "westpfalz", "dataUrl": "https://map.freifunk-westpfalz.de/nodes.json"}
+    {"name": "westpfalz", "dataUrl": "https://map.freifunk-westpfalz.de/nodes.json"},
+    {"name": "Mainz", "dataUrl": "https://map.freifunk-mainz.de/data/nodes.json"},
+    {"name": "Wiesbaden", "dataUrl": "https://map.wiesbaden.freifunk.net/data/nodes.json"}
 ]
