@@ -1,4 +1,6 @@
 (function (window, ko) {
+	var fetch = window.fetch || require('node-fetch');
+
 	var FfAliasList = function () {
 		var self = this;
 		self.processIsRunning = ko.observable(false);
