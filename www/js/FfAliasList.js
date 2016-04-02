@@ -1,7 +1,14 @@
-(function (window, ko) {
-	var fetch = window.fetch || require('node-fetch');
+(function (global) {
+	var FfAliasList = function (dependencies) {
+		var dependencies = dependencies || {};
 
-	var FfAliasList = function () {
+		var ko = dependencies.ko || global.ko || require("knockout");
+		var fetch = dependencies.fetch || global.fetch || require('node-fetch');
+		var nodeListTransform = dependencies.nodeListTransform || global.nodeListTransform || require("./nodeListTransform.js");
+		var cordova = dependencies.cordova || global.cordova;
+		if (typeof resolveLocalFileSystemURL === "undefined") resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
+		var Blob = dependencies.Blob || global.Blob;
+
 		var self = this;
 		self.processIsRunning = ko.observable(false);
 		self.status = ko.observable("");
@@ -45,7 +52,7 @@
 		self.updateDomainList();
 
 		self.platformReady = ko.observable(false);
-		if (typeof cordova !== "undefined") {
+		if (typeof cordova !== "undefined" && typeof document !== "undefined") {
 			document.addEventListener(
 				'deviceready',
 				function () {
@@ -57,65 +64,66 @@
 			self.platformReady(true);
 		}
 
+		var generateListFromResponse = function (response) {
+			if(response.ok) {
+				return response.text().then(function (text) {
+					self.status("Erstelle Liste...");
+
+					var data = JSON.parse(text);
+					var aliasText = nodeListTransform(data).join("\n");
+
+					return aliasText;
+				}).catch(function (error) {
+					throw "Fehler beim Erstellen der Alias-Liste"
+				});
+			} else {
+				// We reached our target server, but it returned an error
+				throw "Serverfehler";
+			}
+		}
+
+		var saveListToFile = function (aliasText) {
+			self.status("Speichere Liste...");
+
+			return new Promise(function (resolve, reject) {
+				resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
+					dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
+						file.createWriter(function(fileWriter) {
+							var blob = new Blob([aliasText], {type:'text/plain'});
+							fileWriter.write(blob);
+							self.processIsRunning(false);
+							self.status("Fertig.");
+							setTimeout(function () {
+								self.status("");
+							}, 3000);
+							resolve();
+						}, reject);
+					});
+				});
+			});
+		}
+
 		self.saveAliasList = function () {
 			self.processIsRunning(true);
 			self.status("Lade...");
 
-			var request = new XMLHttpRequest();
-			request.open("GET", self.selectedDomainDataUrl(), true);
-
-			request.onload = function() {
-			  if (this.status >= 200 && this.status < 400) {
-				// Success!
-				self.status("Erstelle Liste...");
-
-				var data = JSON.parse(this.response);
-
-				var text = nodeListTransform(data).join("\n");
-
-				self.status("Speichere Liste...");
-
-				window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
-					dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
-						file.createWriter(function(fileWriter) {
-							var blob = new Blob([text], {type:'text/plain'});
-							fileWriter.write(blob);
-							self.processIsRunning(false);
-							self.status("Fertig.");
-							window.setTimeout(function () {
-								self.status("");
-							}, 3000);
-						}, fail);
-					});
+			return fetch(self.selectedDomainDataUrl())
+				.then(generateListFromResponse)
+				.then(saveListToFile)
+				.catch(function (error) {
+					// There was an error of some sort
+					// Inform user and re-throw
+					self.processIsRunning(false);
+					self.status(error);
+					throw error;
 				});
-
-			  } else {
-				// We reached our target server, but it returned an error
-				self.processIsRunning(false);
-				self.status("Serverfehler!");
-			  }
-			};
-
-			request.onerror = function() {
-				// There was a connection error of some sort
-				self.processIsRunning(false);
-				self.status("Verbindungsfehler! Hast du Internet?");
-			};
-
-			request.send();
-
-			function fail(e) {
-				self.processIsRunning(false);
-				self.status("Exception: " + e);
-			}
-
 		};
 	};
 
 	// Export as module or global
 	if (typeof module !== "undefined" && module.exports) {
-		module.exports.FfAliasList = FfAliasList;
+		module.exports = FfAliasList;
 	} else {
-		window.FfAliasList = FfAliasList;
+		global.FfAliasList = FfAliasList;
 	}
-})(this, this.ko || require("knockout"));
+})(this);
