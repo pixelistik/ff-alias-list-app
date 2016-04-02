@@ -1,7 +1,10 @@
-(function (window, ko) {
-	var fetch = window.fetch || require('node-fetch');
+(function (global) {
+	var FfAliasList = function (dependencies) {
+		var dependencies = dependencies || {};
 
-	var FfAliasList = function () {
+		var ko = dependencies.ko || global.ko || require("knockout");
+		var fetch = dependencies.fetch || global.fetch || require('node-fetch');
+
 		var self = this;
 		self.processIsRunning = ko.observable(false);
 		self.status = ko.observable("");
@@ -60,49 +63,39 @@
 		self.saveAliasList = function () {
 			self.processIsRunning(true);
 			self.status("Lade...");
+			
+			fetch(self.selectedDomainDataUrl()).then(function (response) {
+				if(response.ok) {
+					response.text().then(function (text) {
+						self.status("Erstelle Liste...");
+						var data = JSON.parse(text);
+						var aliasText = nodeListTransform(data).join("\n");
 
-			var request = new XMLHttpRequest();
-			request.open("GET", self.selectedDomainDataUrl(), true);
-
-			request.onload = function() {
-			  if (this.status >= 200 && this.status < 400) {
-				// Success!
-				self.status("Erstelle Liste...");
-
-				var data = JSON.parse(this.response);
-
-				var text = nodeListTransform(data).join("\n");
-
-				self.status("Speichere Liste...");
-
-				window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
-					dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
-						file.createWriter(function(fileWriter) {
-							var blob = new Blob([text], {type:'text/plain'});
-							fileWriter.write(blob);
-							self.processIsRunning(false);
-							self.status("Fertig.");
-							window.setTimeout(function () {
-								self.status("");
-							}, 3000);
-						}, fail);
+						self.status("Speichere Liste...");
+						global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
+							dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
+								file.createWriter(function(fileWriter) {
+									var blob = new Blob([aliasText], {type:'text/plain'});
+									fileWriter.write(blob);
+									self.processIsRunning(false);
+									self.status("Fertig.");
+									global.setTimeout(function () {
+										self.status("");
+									}, 3000);
+								}, fail);
+							});
+						});
 					});
-				});
-
-			  } else {
-				// We reached our target server, but it returned an error
-				self.processIsRunning(false);
-				self.status("Serverfehler!");
-			  }
-			};
-
-			request.onerror = function() {
+				} else {
+					// We reached our target server, but it returned an error
+					self.processIsRunning(false);
+					self.status("Serverfehler!");
+				}
+			}).catch(function (error) {
 				// There was a connection error of some sort
 				self.processIsRunning(false);
 				self.status("Verbindungsfehler! Hast du Internet?");
-			};
-
-			request.send();
+			});
 
 			function fail(e) {
 				self.processIsRunning(false);
@@ -114,8 +107,8 @@
 
 	// Export as module or global
 	if (typeof module !== "undefined" && module.exports) {
-		module.exports.FfAliasList = FfAliasList;
+		module.exports = FfAliasList;
 	} else {
-		window.FfAliasList = FfAliasList;
+		global.FfAliasList = FfAliasList;
 	}
-})(this, this.ko || require("knockout"));
+})(this);
