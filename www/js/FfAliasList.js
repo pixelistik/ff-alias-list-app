@@ -4,6 +4,7 @@
 
 		var ko = dependencies.ko || global.ko || require("knockout");
 		var fetch = dependencies.fetch || global.fetch || require('node-fetch');
+		var nodeListTransform = dependencies.nodeListTransform || global.nodeListTransform || require("./nodeListTransform.js");
 
 		var self = this;
 		self.processIsRunning = ko.observable(false);
@@ -71,21 +72,27 @@
 
 						var data = JSON.parse(text);
 						var aliasText = nodeListTransform(data).join("\n");
-						
+
 						self.status("Speichere Liste...");
-						global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
-							dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
-								file.createWriter(function(fileWriter) {
-									var blob = new Blob([aliasText], {type:'text/plain'});
-									fileWriter.write(blob);
-									self.processIsRunning(false);
-									self.status("Fertig.");
-									global.setTimeout(function () {
-										self.status("");
-									}, 3000);
-								}, fail);
+
+						return new Promise(function (resolve, reject) {
+							global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
+								dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
+									file.createWriter(function(fileWriter) {
+										var blob = new Blob([aliasText], {type:'text/plain'});
+										fileWriter.write(blob);
+										self.processIsRunning(false);
+										self.status("Fertig.");
+										global.setTimeout(function () {
+											self.status("");
+										}, 3000);
+										resolve();
+									}, reject);
+								});
 							});
 						});
+					}).catch(function (error) {
+						self.status("Fehler beim Speichern.");
 					});
 				} else {
 					// We reached our target server, but it returned an error
@@ -97,12 +104,6 @@
 				self.processIsRunning(false);
 				self.status("Verbindungsfehler! Hast du Internet?");
 			});
-
-			function fail(e) {
-				self.processIsRunning(false);
-				self.status("Exception: " + e);
-			}
-
 		};
 	};
 
