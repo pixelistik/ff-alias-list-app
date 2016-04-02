@@ -71,12 +71,11 @@
 
 					return aliasText;
 				}).catch(function (error) {
-					self.status("Fehler beim Speichern.");
+					throw "Fehler beim Erstellen der Alias-Liste"
 				});
 			} else {
 				// We reached our target server, but it returned an error
-				self.processIsRunning(false);
-				self.status("Serverfehler!");
+				throw "Serverfehler";
 			}
 		}
 
@@ -110,9 +109,9 @@
 				.then(saveListToFile)
 				.catch(function (error) {
 					console.log(error);
-					// There was a connection error of some sort
+					// There was an error of some sort
 					self.processIsRunning(false);
-					self.status("Verbindungsfehler! Hast du Internet?");
+					self.status(error);
 				});
 		};
 	};
