@@ -43,12 +43,17 @@
 			macParts[1] = (parseInt(macParts[1], 16) + 2).toString(16);
 			macParts[2] = (parseInt(macParts[2], 16) + offset).toString(16);
 
+			// Enforce leading zeroes
+			macParts = macParts.map(function (macPart) {
+				return ("0" + macPart).substr(macPart.length - 1)
+			});
+
 			return {
 				hostname: node.hostname,
 				mac: macParts.join(":")
 			};
 		}
-		
+
 		var extendedMacList = [];
 
 		macList.forEach(function (node) {

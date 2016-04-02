@@ -72,4 +72,24 @@ describe("Wifi Analyzer alias list", function () {
 
 		assert.notInclude(result.join(), "undefined");
 	});
+
+	/**
+	 * https://github.com/pixelistik/ff-alias-list-app/issues/3
+	 */
+	it("should keep leading zeroes in a mac", function () {
+		var result = nodeListTransform({
+			nodes: {
+				c423523487: {
+					nodeinfo: {
+						hostname: "host-one",
+						network: {
+							mac: "01:02:03:ee:01:01"
+						}
+					}
+				}
+			}
+		});
+		assert.include(result.join(), "03:04:04:ee:01:01");
+		assert.include(result.join(), "03:04:05:ee:01:01");
+	});
 });
