@@ -63,14 +63,15 @@
 		self.saveAliasList = function () {
 			self.processIsRunning(true);
 			self.status("Lade...");
-			
-			fetch(self.selectedDomainDataUrl()).then(function (response) {
+
+			return fetch(self.selectedDomainDataUrl()).then(function (response) {
 				if(response.ok) {
-					response.text().then(function (text) {
+					return response.text().then(function (text) {
 						self.status("Erstelle Liste...");
+
 						var data = JSON.parse(text);
 						var aliasText = nodeListTransform(data).join("\n");
-
+						
 						self.status("Speichere Liste...");
 						global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
 							dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
