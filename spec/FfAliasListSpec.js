@@ -25,8 +25,35 @@ describe("App view model", function () {
 		});
 	};
 
+	var cordovaStub = {
+		file: {
+			externalRootDirectory: "bla"
+		}
+	};
+
+	var resolveLocalFileSystemURLStub = function (path, callback) {
+		callback({
+			getFile: function (name, params, callback) {
+				callback({
+					createWriter: function (callback) {
+						callback({
+							write: function () { }
+						});
+					}
+				});
+			}
+		});
+	};
+
+	var blobStub = function () {
+
+	}
+
 	var dependencies = {
-		fetch: fetchStub
+		fetch: fetchStub,
+		cordova: cordovaStub,
+		resolveLocalFileSystemURL: resolveLocalFileSystemURLStub,
+		Blob: blobStub
 	};
 
 	beforeEach(function () {

@@ -5,6 +5,9 @@
 		var ko = dependencies.ko || global.ko || require("knockout");
 		var fetch = dependencies.fetch || global.fetch || require('node-fetch');
 		var nodeListTransform = dependencies.nodeListTransform || global.nodeListTransform || require("./nodeListTransform.js");
+		var cordova = dependencies.cordova || global.cordova;
+		if (typeof resolveLocalFileSystemURL === "undefined") resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
+		var Blob = dependencies.Blob || global.Blob;
 
 		var self = this;
 		self.processIsRunning = ko.observable(false);
@@ -49,7 +52,7 @@
 		self.updateDomainList();
 
 		self.platformReady = ko.observable(false);
-		if (typeof cordova !== "undefined") {
+		if (typeof cordova !== "undefined" && typeof document !== "undefined") {
 			document.addEventListener(
 				'deviceready',
 				function () {
@@ -83,14 +86,14 @@
 			self.status("Speichere Liste...");
 
 			return new Promise(function (resolve, reject) {
-				global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
+				resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
 					dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
 						file.createWriter(function(fileWriter) {
 							var blob = new Blob([aliasText], {type:'text/plain'});
 							fileWriter.write(blob);
 							self.processIsRunning(false);
 							self.status("Fertig.");
-							global.setTimeout(function () {
+							setTimeout(function () {
 								self.status("");
 							}, 3000);
 							resolve();
@@ -108,10 +111,11 @@
 				.then(generateListFromResponse)
 				.then(saveListToFile)
 				.catch(function (error) {
-					console.log(error);
 					// There was an error of some sort
+					// Inform user and re-throw
 					self.processIsRunning(false);
 					self.status(error);
+					throw error;
 				});
 		};
 	};
