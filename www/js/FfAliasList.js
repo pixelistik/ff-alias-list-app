@@ -61,49 +61,59 @@
 			self.platformReady(true);
 		}
 
+		var generateListFromResponse = function (response) {
+			if(response.ok) {
+				return response.text().then(function (text) {
+					self.status("Erstelle Liste...");
+
+					var data = JSON.parse(text);
+					var aliasText = nodeListTransform(data).join("\n");
+
+					return aliasText;
+				}).catch(function (error) {
+					self.status("Fehler beim Speichern.");
+				});
+			} else {
+				// We reached our target server, but it returned an error
+				self.processIsRunning(false);
+				self.status("Serverfehler!");
+			}
+		}
+
+		var saveListToFile = function (aliasText) {
+			self.status("Speichere Liste...");
+
+			return new Promise(function (resolve, reject) {
+				global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
+					dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
+						file.createWriter(function(fileWriter) {
+							var blob = new Blob([aliasText], {type:'text/plain'});
+							fileWriter.write(blob);
+							self.processIsRunning(false);
+							self.status("Fertig.");
+							global.setTimeout(function () {
+								self.status("");
+							}, 3000);
+							resolve();
+						}, reject);
+					});
+				});
+			});
+		}
+
 		self.saveAliasList = function () {
 			self.processIsRunning(true);
 			self.status("Lade...");
 
-			return fetch(self.selectedDomainDataUrl()).then(function (response) {
-				if(response.ok) {
-					return response.text().then(function (text) {
-						self.status("Erstelle Liste...");
-
-						var data = JSON.parse(text);
-						var aliasText = nodeListTransform(data).join("\n");
-
-						self.status("Speichere Liste...");
-
-						return new Promise(function (resolve, reject) {
-							global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(dir) {
-								dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function(file) {
-									file.createWriter(function(fileWriter) {
-										var blob = new Blob([aliasText], {type:'text/plain'});
-										fileWriter.write(blob);
-										self.processIsRunning(false);
-										self.status("Fertig.");
-										global.setTimeout(function () {
-											self.status("");
-										}, 3000);
-										resolve();
-									}, reject);
-								});
-							});
-						});
-					}).catch(function (error) {
-						self.status("Fehler beim Speichern.");
-					});
-				} else {
-					// We reached our target server, but it returned an error
+			return fetch(self.selectedDomainDataUrl())
+				.then(generateListFromResponse)
+				.then(saveListToFile)
+				.catch(function (error) {
+					console.log(error);
+					// There was a connection error of some sort
 					self.processIsRunning(false);
-					self.status("Serverfehler!");
-				}
-			}).catch(function (error) {
-				// There was a connection error of some sort
-				self.processIsRunning(false);
-				self.status("Verbindungsfehler! Hast du Internet?");
-			});
+					self.status("Verbindungsfehler! Hast du Internet?");
+				});
 		};
 	};
 
