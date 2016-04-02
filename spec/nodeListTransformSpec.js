@@ -2,7 +2,7 @@ var assert = require("chai").assert
 var nodeListTransform = require("../www/js/nodeListTransform.js")
 
 describe("Wifi Analyzer alias list", function () {
-	it("should derive 2 client MACs from the primary MAC correctly", function () {7
+	it("should derive 2 client MACs from the primary MAC correctly", function () {
 		var hostname = "derive-mac-test-host";
 		var primaryMac =         "24:a4:3c:b1:11:d9";
 		var expectedClientMac1 = "26:a6:3d:b1:11:d9";
