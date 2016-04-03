@@ -9,7 +9,7 @@
         var nodeListTransform = dependencies.nodeListTransform || global.nodeListTransform || require("./nodeListTransform.js");
         var cordova = dependencies.cordova || global.cordova;
         if (typeof resolveLocalFileSystemURL === "undefined") {
-            resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
+            var resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
         }
         var Blob = dependencies.Blob || global.Blob;
 
