@@ -8,7 +8,8 @@ module.exports = {
         ],
         "quotes": [
             2,
-            "double"
+            "double",
+            "avoid-escape"
         ],
         "linebreak-style": [
             2,
@@ -21,7 +22,7 @@ module.exports = {
         "curly": [2],
         "no-multi-spaces": [2],
         "eqeqeq": [2],
-        "strict": [2, "function"],
+        "strict": [2, "safe"],
         "brace-style": [2],
         "space-before-function-paren": [
             2,
@@ -38,7 +39,9 @@ module.exports = {
     },
     "globals": {
         "Promise": true,
-        "resolveLocalFileSystemURL": true
+        "resolveLocalFileSystemURL": true,
+        "FfAliasList": true,
+        "ko": true
     },
     "extends": "eslint:recommended"
 };

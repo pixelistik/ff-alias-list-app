@@ -1,6 +1,6 @@
-(function (window) {
-    "use strict";
+"use strict";
 
+(function (window) {
     var nodeListTransform = function (nodeData) {
         var nodes = nodeData.nodes;
 

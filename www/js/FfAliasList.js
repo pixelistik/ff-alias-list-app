@@ -1,5 +1,6 @@
+"use strict";
+
 (function (global) {
-    "use strict";
     var FfAliasList = function (dependencies) {
         dependencies = dependencies || {};
 
