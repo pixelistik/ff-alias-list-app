@@ -21,7 +21,7 @@ module.exports = {
         "curly": [2],
         "no-multi-spaces": [2],
         "eqeqeq": [2],
-        "strict": [2, "global"],
+        "strict": [2, "function"],
         "brace-style": [2],
         "space-before-function-paren": [
             2,
@@ -35,6 +35,10 @@ module.exports = {
         "browser": true,
         "node": true,
         "mocha": true
+    },
+    "globals": {
+        "Promise": true,
+        "resolveLocalFileSystemURL": true
     },
     "extends": "eslint:recommended"
 };
