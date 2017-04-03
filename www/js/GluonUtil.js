@@ -1,8 +1,8 @@
 "use strict";
 
-var md5 = require("blueimp-md5");
-
 (function (window) {
+    var md5 = window.md5 || require("blueimp-md5");
+
     var GluonUtil = {
         /*
         Reimplementation of the Gluon derivation in Lua

@@ -2,6 +2,8 @@
 
 (function (window) {
     var nodeListTransform = function (nodeData) {
+        var GluonUtil = window.GluonUtil || require("./GluonUtil.js");
+
         var nodes = nodeData.nodes;
 
         var nodeList = [];
@@ -36,27 +38,19 @@
          * @see https://forum.freifunk.net/t/wifi-analyzer-alias-app/8475/11
          */
         var nodeWithDerivedClientMac = function (node, offset) {
-            var macParts = node.mac.split(":");
-            macParts[0] = (parseInt(macParts[0], 16) + 2).toString(16);
-            macParts[1] = (parseInt(macParts[1], 16) + 2).toString(16);
-            macParts[2] = (parseInt(macParts[2], 16) + offset).toString(16);
-
-            // Enforce leading zeroes
-            macParts = macParts.map(function (macPart) {
-                return ("0" + macPart).substr(macPart.length - 1);
-            });
+            var derivedMac = GluonUtil.generateMac(node.mac, offset);
 
             return {
                 hostname: node.hostname,
-                mac: macParts.join(":")
+                mac: derivedMac
             };
         };
 
         var extendedMacList = [];
 
         macList.forEach(function (node) {
-            extendedMacList.push(nodeWithDerivedClientMac(node, 1));
-            extendedMacList.push(nodeWithDerivedClientMac(node, 2));
+            extendedMacList.push(nodeWithDerivedClientMac(node, 3));
+            extendedMacList.push(nodeWithDerivedClientMac(node, 4));
         });
 
         return extendedMacList.map(function (node) {
