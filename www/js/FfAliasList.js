@@ -92,7 +92,7 @@
             self.status("Speichere Liste...");
 
             return new Promise(function (resolve, reject) {
-                resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function (dir) {
+                global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function (dir) {
                     dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function (file) {
                         file.createWriter(function (fileWriter) {
                             var blob = new Blob([aliasText], {type: "text/plain"});
