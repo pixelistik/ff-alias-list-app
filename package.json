@@ -6,7 +6,7 @@
   "dependencies": {
     "async": "~1.4.2",
     "blueimp-md5": "^2.7.0",
-    "cordova": "~5.3.3",
+    "cordova": "~6.5.0",
     "material-design-lite": "~1.0.5",
     "request": "~2.64.0",
     "whatwg-fetch": "~0.11.0"
