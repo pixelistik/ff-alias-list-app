@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.pixelistik.ffaliaslist" version="9.9.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <!-- Version will be overridden from git tag by hooks/after_prepare/version-from-git.sh -->
+<widget id="de.pixelistik.ffaliaslist" version="9.9.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <config-file platform="android" parent="/manifest" mode="merge">
+        <!-- Enable for Chrome remote debugging of WebView
+        <application android:debuggable="true" /> -->
+    </config-file>
     <name>Freifunk Alias List</name>
     <description>
         Debug Freifunk wifi nodes with the popular Wifi Analyzer app - and get
