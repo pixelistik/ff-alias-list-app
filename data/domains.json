@@ -39,5 +39,6 @@
     {"name": "moehne-sundern", "dataUrl": "http://map.freifunk-moehne.de/data-sundern/nodes.json" },
     {"name": "westpfalz", "dataUrl": "https://map.freifunk-westpfalz.de/nodes.json"},
     {"name": "Mainz", "dataUrl": "https://map.freifunk-mainz.de/data/nodes.json"},
-    {"name": "Wiesbaden", "dataUrl": "https://map.wiesbaden.freifunk.net/data/nodes.json"}
+    {"name": "Wiesbaden", "dataUrl": "https://map.wiesbaden.freifunk.net/data/nodes.json"},
+    {"name": "Regensburg", "dataUrl": "https://regensburg.freifunk.net/data/nodes.json"}
 ]
