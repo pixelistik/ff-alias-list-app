@@ -24,4 +24,12 @@ describe("GluonUtil", function () {
 
         assert.equal(result, "66:73:38:76:45:34")
     });
+
+    it("should keep leading zeroes", function () {
+        var primaryMac = "10:fe:ed:e6:07:7a";
+
+        var result = GluonUtil.generateMac(primaryMac, 0);
+
+        assert.equal(result, "02:56:a6:d1:a8:c8");
+    });
 });
