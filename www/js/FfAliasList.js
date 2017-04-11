@@ -54,20 +54,7 @@
             });
         };
 
-        self.platformReady = ko.observable(false);
-        if (typeof cordova !== "undefined" && typeof document !== "undefined") {
-            document.addEventListener(
-                "deviceready",
-                function () {
-                    self.platformReady(true);
-                    self.updateDomainList();
-                },
-                false
-            );
-        } else {
-            self.platformReady(true);
-            self.updateDomainList();
-        }
+        self.updateDomainList();
 
         var generateListFromResponse = function (response) {
             if(response.ok) {
