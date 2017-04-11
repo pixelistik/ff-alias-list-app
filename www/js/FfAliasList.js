@@ -8,9 +8,8 @@
         var fetch = dependencies.fetch || global.fetch || require("node-fetch");
         var nodeListTransform = dependencies.nodeListTransform || global.nodeListTransform || require("./nodeListTransform.js");
         var cordova = dependencies.cordova || global.cordova;
-        if (typeof global.resolveLocalFileSystemURL === "undefined") {
-            global.resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
-        }
+        var resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL || global.resolveLocalFileSystemURL;
+        var localStorage = dependencies.localStorage || global.localStorage;
         var Blob = dependencies.Blob || global.Blob;
 
         var self = this;
@@ -92,7 +91,7 @@
             self.status("Speichere Liste...");
 
             return new Promise(function (resolve, reject) {
-                global.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function (dir) {
+                resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function (dir) {
                     dir.getFile("WifiAnalyzer_Alias.txt", {create:true}, function (file) {
                         file.createWriter(function (fileWriter) {
                             var blob = new Blob([aliasText], {type: "text/plain"});

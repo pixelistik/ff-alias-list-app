@@ -51,11 +51,16 @@ describe("App view model", function () {
 
     };
 
+    var localStorageStub = {
+        setItem: function () { }
+    };
+
     var dependencies = {
         fetch: fetchStub,
         cordova: cordovaStub,
         resolveLocalFileSystemURL: resolveLocalFileSystemURLStub,
-        Blob: blobStub
+        Blob: blobStub,
+        localStorage: localStorageStub
     };
 
     beforeEach(function () {
