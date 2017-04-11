@@ -8,8 +8,8 @@
         var fetch = dependencies.fetch || global.fetch || require("node-fetch");
         var nodeListTransform = dependencies.nodeListTransform || global.nodeListTransform || require("./nodeListTransform.js");
         var cordova = dependencies.cordova || global.cordova;
-        if (typeof resolveLocalFileSystemURL === "undefined") {
-            var resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
+        if (typeof global.resolveLocalFileSystemURL === "undefined") {
+            global.resolveLocalFileSystemURL = dependencies.resolveLocalFileSystemURL;
         }
         var Blob = dependencies.Blob || global.Blob;
 
