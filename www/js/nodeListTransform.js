@@ -49,8 +49,8 @@
         var extendedMacList = [];
 
         macList.forEach(function (node) {
+            extendedMacList.push(nodeWithDerivedClientMac(node, 0));
             extendedMacList.push(nodeWithDerivedClientMac(node, 3));
-            extendedMacList.push(nodeWithDerivedClientMac(node, 4));
         });
 
         return extendedMacList.map(function (node) {
